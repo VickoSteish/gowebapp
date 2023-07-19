@@ -18,7 +18,7 @@ jobs:
 
    - deploy:
        command: |
-         if [ "${CIRCLE_BRANCH}" == "master" ]; then
+         if [ "${CIRCLE_BRANCH}" == "main" ]; then
            docker login -u ${DOCKER_USER} -p ${DOCKER_PASS};
            docker build -t ${DOCKER_REPO}/${CIRCLE_PROJECT_REPONAME} .;
            docker push ${DOCKER_REPO}/${CIRCLE_PROJECT_REPONAME};
