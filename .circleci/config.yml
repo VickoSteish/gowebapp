@@ -1,7 +1,6 @@
 version: 2
 jobs:
  build:
-  # just test
   # Variable expansion in working_directory not supported at this time
   # You will need to modify the code below to reflect your github account/repo setup
   working_directory: /go/src/github.com/VickoSteish/gowebapp
