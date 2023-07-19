@@ -18,9 +18,9 @@ jobs:
    - deploy:
        command: |
          if [ "${CIRCLE_BRANCH}" == "main" ]; then
-           docker login -u ${DOCKER_USER} -p ${DOCKER_PASS};
-           docker build -t ${DOCKER_REPO}/${CIRCLE_PROJECT_REPONAME} .;
-           docker push ${DOCKER_REPO}/${CIRCLE_PROJECT_REPONAME};
+           echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin;
+           docker build -t vickosteish/gowebapp:latest .;
+           docker push vickosteish/gowebapp:latest;
            echo '|1|JcwjgIWuuHvE8S+odFzkZQCda4A=|qISdmU3N+IrZu6UoUmcNoPd16W0= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHktjU5Q0aqXSIr97GixVLjeXyFXX8KtWFeDKb9+tjXXkpWDeN+EHKVh0LnrmKtCw3+hsilmLo80NKuq5PfTfm8=' >> ~/.ssh/known_hosts
            ssh root@89.208.85.107 docker pull vickosteish/gowebapp:latest
            ssh root@89.208.85.107 docker stop gowebapp
