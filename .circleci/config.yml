@@ -7,9 +7,6 @@ jobs:
   docker:
    - image: circleci/golang:latest
   steps:
-   - checkout
-   - setup_remote_docker
-
    - run:
       name: Build
       command: |
@@ -17,7 +14,15 @@ jobs:
           docker build -t vickosteish/gowebapp .;
           docker push vickosteish/gowebapp;
 
-   - deploy:
-       name: Deploy
-       command: |
-         ssh -o StrictHostKeyChecking=no root@89.208.85.107 'echo XXXXXXX'
+  deploy:
+    docker:
+      - image: circleci/golang:latest
+    steps:
+      - add_ssh_keys
+      - run: |
+          ssh -o StrictHostKeyChecking=no root@89.208.85.107 <<'ENDSSH'
+          docker pull vickosteish/gowebapp
+          docker stop gowebapp
+          docker rm gowebapp
+          docker run --name=gowebapp --restart=always -d -p 8080:8080 vickosteish/gowebapp
+          ENDSSH
