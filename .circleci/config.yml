@@ -14,14 +14,13 @@ jobs:
       name: Build
       command: |
           echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin;
-          docker build -t vickosteish/gowebapp:latest .;
-          docker push vickosteish/gowebapp:latest;
+          docker build -t vickosteish/gowebapp .;
+          docker push vickosteish/gowebapp;
 
    - deploy:
        name: Deploy
        command: |
-         echo '|1|JcwjgIWuuHvE8S+odFzkZQCda4A=|qISdmU3N+IrZu6UoUmcNoPd16W0= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHktjU5Q0aqXSIr97GixVLjeXyFXX8KtWFeDKb9+tjXXkpWDeN+EHKVh0LnrmKtCw3+hsilmLo80NKuq5PfTfm8=' >> ~/.ssh/known_hosts
-         ssh root@89.208.85.107 docker pull vickosteish/gowebapp:latest
+         ssh -o StrictHostKeyChecking=no root@89.208.85.107 docker pull vickosteish/gowebapp:latest
          ssh root@89.208.85.107 docker stop gowebapp
          ssh root@89.208.85.107 docker rm gowebapp
          ssh root@89.208.85.107 docker run -d --name=gowebapp --restart=always -p 8080:8080 vickosteish/invoicer-chapter2:latest
