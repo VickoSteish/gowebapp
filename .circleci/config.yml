@@ -20,7 +20,4 @@ jobs:
    - deploy:
        name: Deploy
        command: |
-         ssh -o StrictHostKeyChecking=no root@89.208.85.107 docker pull vickosteish/gowebapp:latest
-         ssh root@89.208.85.107 docker stop gowebapp
-         ssh root@89.208.85.107 docker rm gowebapp
-         ssh root@89.208.85.107 docker run -d --name=gowebapp --restart=always -p 8080:8080 vickosteish/invoicer-chapter2:latest
+         ssh -o StrictHostKeyChecking=no root@89.208.85.107 'docker pull vickosteish/gowebapp:latest && docker stop gowebapp && docker rm gowebapp && docker run -d --name=gowebapp --restart=always -p 8080:8080 vickosteish/invoicer-chapter2:latest'
