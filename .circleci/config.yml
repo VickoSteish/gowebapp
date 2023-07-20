@@ -1,24 +1,29 @@
-version: 2
+version: 2.1
 jobs:
- build:
-  # Variable expansion in working_directory not supported at this time
-  # You will need to modify the code below to reflect your github account/repo setup
-  working_directory: /go/src/github.com/VickoSteish/gowebapp
-  docker:
-   - image: circleci/golang:latest
-  steps:
-   - run:
-      name: Build
-      command: |
-          echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin;
-          docker build -t vickosteish/gowebapp .;
-          docker push vickosteish/gowebapp;
-   - run:
-      name: Deploy
-      command: |
-          ssh -o StrictHostKeyChecking=no root@89.208.85.107 <<'ENDSSH'
-          docker pull vickosteish/gowebapp
-          docker stop gowebapp
-          docker rm gowebapp
-          docker run --name=gowebapp --restart=always -d -p 8080:8080 vickosteish/gowebapp
-          ENDSSH
+  build:
+    machine:
+      image: circleci/golang:latest
+    steps:
+      - checkout
+      - run:
+          name: Build docker image
+          command: |
+            echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin;
+            docker build -t vickosteish/gowebapp .;
+            docker push vickosteish/gowebapp;
+  deploy:
+    machine:
+      image: circleci/golang:latest
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "5d:1a:2f:ee:74:7a:90:9a:39:5f:ee:f0:6f:46:33:51"
+      - run:
+         name: Deploy
+         command: |
+           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@89.208.85.107 <<'ENDSSH'
+           docker pull vickosteish/gowebapp
+           docker stop gowebapp
+           docker rm gowebapp
+           docker run --name=gowebapp --restart=always -d -p 8080:8080 vickosteish/gowebapp
+           ENDSSH
