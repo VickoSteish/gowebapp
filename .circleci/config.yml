@@ -22,10 +22,10 @@ jobs:
       command: |
         if [[ "$CIRCLE_BRANCH" == master || "$CIRCLE_BRANCH" == main ]]; then
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@89.208.85.107 <<'ENDSSH'
-        docker pull vickosteish/gowebapp:latest
+        docker pull vickosteish/gowebapp
         docker stop gowebapp
         docker rm gowebapp
-        docker run --name=gowebapp --restart=always -d -p 8080:8080 vickosteish/gowebapp:latest
+        docker run --name=gowebapp --restart=always -d -p 8080:8080 vickosteish/gowebapp
         docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
         ENDSSH
         fi
