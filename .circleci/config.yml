@@ -20,7 +20,7 @@ jobs:
    - run:
       name: deploying
       command: |
-       if [ "${CIRCLE_BRANCH}" == "main" ]; then
+       if [[ "${CIRCLE_BRANCH}" == "main" ]]; then
         ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa root@89.208.85.107 <<'ENDSSH'
         docker pull vickosteish/gowebapp
         docker stop gowebapp
