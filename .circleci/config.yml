@@ -25,4 +25,5 @@ jobs:
        docker stop gowebapp
        docker rm gowebapp
        docker run --name=gowebapp --restart=always -d -p 8080:8080 vickosteish/gowebapp:latest
+       docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
        ENDSSH
