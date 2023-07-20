@@ -18,9 +18,10 @@ func root(w http.ResponseWriter, req *http.Request) {
     info, _ := net.InterfaceAddrs()
         ipx := strings.Split(info[1].String(), "/")[0]
 
-    output := "<b>Hostname: </b>" + hostname + "</br>" + 
+    output := "<b>Hostname: </b>" + hostname + "</br>" +
               "<b>IP address: </b>" + ipx + "</br>" +
-              "<b>Version:</b> v5"
+              "<b>Version:</b> v5" + "</br>" +
+              "<b>Dev Version v1</b>"
     fmt.Fprintf(w, output)
 }
 
